@@ -94,6 +94,10 @@ const buildEnd = built.to
     ? new Date(built.to + 'T12:00:00')
     : (thread.status === 'done' ? parseDate(thread.posts[thread.posts.length - 1].date) : null);
 
+// Index du premier post posterieur a la fin du build, ou -1
+const isAfterBuild = (date) => buildEnd && date > buildEnd && date.toDateString() !== buildEnd.toDateString();
+const firstUpgradeIndex = thread.posts.findIndex((post) => isAfterBuild(parseDate(post.date)));
+
 const renderHeader = () => {
     const first = buildStart;
     const last = buildEnd;
@@ -134,6 +138,12 @@ const renderHeader = () => {
                 </dd>
             </div>
         </dl>
+        <ul class="thread-jumps">
+            <li><a href="#post-1">First post</a></li>
+            ${buildEnd && firstUpgradeIndex !== 0 ? `<li><a href="#post-${firstUpgradeIndex === -1 ? thread.posts.length : firstUpgradeIndex}">Build end</a></li>` : ''}
+            ${firstUpgradeIndex !== -1 ? '<li><a href="#upgrades">Upgrades and tweaks</a></li>' : ''}
+            <li><a href="#post-${thread.posts.length}">Latest post</a></li>
+        </ul>
         <ul class="thread-months">
             ${months.map((month) => `<li><a href="#month-${month.key}">${month.label}<span class="thread-month-count">${month.count}</span></a></li>`).join('')}
         </ul>
@@ -169,10 +179,10 @@ const renderTimeline = () => {
     thread.posts.forEach((post, index) => {
         const date = parseDate(post.date);
         const key = monthKey(date);
-        if (!afterBuild && buildEnd && date > buildEnd && date.toDateString() !== buildEnd.toDateString()) {
+        if (!afterBuild && isAfterBuild(date)) {
             afterBuild = true;
             currentMonth = null;
-            parts.push('<h2 class="timeline-divider">Upgrades and tweaks</h2>');
+            parts.push('<h2 class="timeline-divider" id="upgrades">Upgrades and tweaks</h2>');
         }
         if (key !== currentMonth) {
             currentMonth = key;
