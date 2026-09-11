@@ -994,13 +994,53 @@ button {
     padding: 0 0 80px;
 }
 
-.project-grid {
+.project-timeline {
+    --year-width: 110px;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.project-timeline::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    bottom: 0;
+    left: calc(var(--year-width) - 1px);
+    width: 2px;
+    background: var(--rail);
+}
+
+.project-year {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: var(--year-width) 1fr;
+    gap: 0 34px;
+    margin: 0 0 44px;
+}
+
+.project-year-label {
+    position: sticky;
+    top: 16px;
+    align-self: start;
+    padding-right: 26px;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--accent);
+}
+
+.project-year-list {
+    display: grid;
     gap: 18px;
     margin: 0;
     padding: 0;
     list-style: none;
+    min-width: 0;
 }
 
 .project-card {
@@ -1008,9 +1048,25 @@ button {
     min-width: 0;
 }
 
+.project-marker {
+    position: absolute;
+    left: -40px;
+    top: 22px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px var(--bg);
+}
+
+.is-wip .project-marker {
+    background: var(--bg);
+    border: 2px solid var(--accent);
+}
+
 .project-link {
-    display: block;
-    height: 100%;
+    display: grid;
+    grid-template-columns: 200px 1fr;
     border-radius: 16px;
     overflow: hidden;
     background: var(--surface);
@@ -1020,7 +1076,7 @@ button {
 
 .project-link:hover {
     background: var(--surface-raised);
-    transform: translateY(-3px);
+    transform: translateX(4px);
     text-decoration: none;
 }
 
@@ -1032,6 +1088,8 @@ button {
 .project-cover {
     display: block;
     width: 100%;
+    height: 100%;
+    min-height: 240px;
     aspect-ratio: 4 / 5;
     object-fit: cover;
     background: var(--media-bg);
@@ -1059,8 +1117,10 @@ button {
 .project-body {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 4px;
-    padding: 16px 18px 18px;
+    padding: 22px 26px;
+    min-width: 0;
 }
 
 .project-status {
@@ -1076,20 +1136,28 @@ button {
 }
 
 .project-title {
-    font-size: 22px;
-    font-weight: 650;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
 }
 
 .project-period {
+    margin-top: 8px;
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--text);
 }
 
+.project-span {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
 .project-meta {
-    margin-top: 4px;
+    margin-top: 12px;
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--text-muted);
@@ -1158,6 +1226,46 @@ button {
 
     .post-media[data-count="1"] .media-cell {
         max-height: 70vh;
+    }
+
+    .project-timeline {
+        --year-width: 18px;
+    }
+
+    .project-year {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding-left: calc(var(--year-width) + 18px);
+    }
+
+    .project-year-label {
+        position: static;
+        text-align: left;
+        padding: 0;
+        font-size: 24px;
+    }
+
+    .project-marker {
+        left: -24px;
+        top: 18px;
+    }
+
+    .project-link {
+        grid-template-columns: 1fr;
+    }
+
+    .project-link:hover {
+        transform: none;
+    }
+
+    .project-cover {
+        min-height: 0;
+        max-height: 320px;
+        aspect-ratio: 4 / 3;
+    }
+
+    .project-title {
+        font-size: 24px;
     }
 
     .lightbox-nav {

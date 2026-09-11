@@ -22,7 +22,7 @@ const projects = [
     {
         "folder": "wacca",
         "title": "Wacca",
-        "posts": 24
+        "posts": 25
     },
     {
         "folder": "soundvoltex",
