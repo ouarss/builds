@@ -1,0 +1,9 @@
+# Secrets, donnees de travail et outillage : jamais publies
+.env
+cookies.txt
+*.part
+*.bak
+__pycache__/
+tools/
+site.json
+*/thread.json
